@@ -72,4 +72,10 @@ yarn preview
 bun run preview
 ```
 
+## Creating Typescript Classes From Swagger
+
+```
+app> npx openapi-typescript@5.4.1 http://localhost:5000/swagger/v1/swagger.json --output desafio-backend.ts        
+```
+
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
