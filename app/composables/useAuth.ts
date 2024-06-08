@@ -13,6 +13,7 @@ export const useAuth = () => {
             if(data) {
                 userAdmin.value = data.isAdmin
                 setUser(data)
+                authClient.setAuthToken(data.accessToken);
                 return data
             }
         } catch (err) {

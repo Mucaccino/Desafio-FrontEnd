@@ -8,12 +8,46 @@
 /* eslint-disable */
 // ReSharper disable InconsistentNaming
 
-export class AuthClient {
+export class ClientBase {
+    /**
+     * authorization token value
+     */
+    public static authToken: string | null = null
+
+    constructor() {
+        
+    }
+
+    setAuthToken(token: string) {
+        ClientBase.authToken = token;
+    }
+
+    protected transformOptions(options: RequestInit): Promise<RequestInit> {
+        debugger;
+        if (ClientBase.authToken) {
+            options.headers["Authorization"] = "bearer " + ClientBase.authToken 
+        } else {
+            console.warn("Authorization token have not been set please authorize first.");
+        }
+        return Promise.resolve(options);
+    }
+
+    protected transformResult(url: string, response: Response, processor: (response: Response) => any) {
+        debugger;
+        // TODO: Return own result or throw exception to change default processing behavior, 
+        // or call processor function to run the default processing logic
+        console.log("Service call: " + url);
+        return processor(response);
+    }
+}
+
+export class AuthClient extends ClientBase {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
         this.http = http ? http : window as any;
         this.baseUrl = baseUrl ?? "";
     }
@@ -38,7 +72,9 @@ export class AuthClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processAuthenticate(_response);
         });
     }
@@ -108,7 +144,9 @@ export class AuthClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processRefreshToken(_response);
         });
     }
@@ -151,12 +189,13 @@ export class AuthClient {
     }
 }
 
-export class HealthClient {
+export class HealthClient extends ClientBase {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
         this.http = http ? http : window as any;
         this.baseUrl = baseUrl ?? "";
     }
@@ -176,7 +215,9 @@ export class HealthClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processCheckHealth(_response);
         });
     }
@@ -205,12 +246,13 @@ export class HealthClient {
     }
 }
 
-export class LicenseImageClient {
+export class LicenseImageClient extends ClientBase {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
         this.http = http ? http : window as any;
         this.baseUrl = baseUrl ?? "";
     }
@@ -242,7 +284,9 @@ export class LicenseImageClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processUploadImage(_response);
         });
     }
@@ -291,7 +335,9 @@ export class LicenseImageClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processGetImage(_response);
         });
     }
@@ -319,12 +365,13 @@ export class LicenseImageClient {
     }
 }
 
-export class MotorcycleClient {
+export class MotorcycleClient extends ClientBase {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
         this.http = http ? http : window as any;
         this.baseUrl = baseUrl ?? "";
     }
@@ -349,7 +396,9 @@ export class MotorcycleClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processCreate(_response);
         });
     }
@@ -392,7 +441,9 @@ export class MotorcycleClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processGetById(_response);
         });
     }
@@ -439,7 +490,9 @@ export class MotorcycleClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processUpdate(_response);
         });
     }
@@ -485,7 +538,9 @@ export class MotorcycleClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processRemoveMotorcycle(_response);
         });
     }
@@ -527,7 +582,9 @@ export class MotorcycleClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processGetMotorcycles(_response);
         });
     }
@@ -558,12 +615,13 @@ export class MotorcycleClient {
     }
 }
 
-export class RentalClient {
+export class RentalClient extends ClientBase {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
         this.http = http ? http : window as any;
         this.baseUrl = baseUrl ?? "";
     }
@@ -588,7 +646,9 @@ export class RentalClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processRentalRegister(_response);
         });
     }
@@ -626,7 +686,9 @@ export class RentalClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processGetAll(_response);
         });
     }
@@ -675,7 +737,9 @@ export class RentalClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processGetById(_response);
         });
     }
@@ -722,7 +786,9 @@ export class RentalClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processGetTotalCostById(_response);
         });
     }
@@ -770,7 +836,9 @@ export class RentalClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processDeliverMotorcycle(_response);
         });
     }
@@ -798,12 +866,13 @@ export class RentalClient {
     }
 }
 
-export class RentalPlanClient {
+export class RentalPlanClient extends ClientBase {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
         this.http = http ? http : window as any;
         this.baseUrl = baseUrl ?? "";
     }
@@ -823,7 +892,9 @@ export class RentalPlanClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processGetAll(_response);
         });
     }
@@ -854,12 +925,13 @@ export class RentalPlanClient {
     }
 }
 
-export class UserClient {
+export class UserClient extends ClientBase {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
     constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
+        super();
         this.http = http ? http : window as any;
         this.baseUrl = baseUrl ?? "";
     }
@@ -884,7 +956,9 @@ export class UserClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processRegisterAdmin(_response);
         });
     }
@@ -927,7 +1001,9 @@ export class UserClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processRegisterDeliveryDriver(_response);
         });
     }
@@ -971,7 +1047,9 @@ export class UserClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processGetAllUsers(_response);
         });
     }
@@ -1019,7 +1097,9 @@ export class UserClient {
             }
         };
 
-        return this.http.fetch(url_, options_).then((_response: Response) => {
+        return this.transformOptions(options_).then(transformedOptions_ => {
+            return this.http.fetch(url_, transformedOptions_);
+        }).then((_response: Response) => {
             return this.processGetAllDeliveryDrivers(_response);
         });
     }

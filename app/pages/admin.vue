@@ -4,7 +4,9 @@
         <p>This page should only be visible if user is logged in and has admin role</p>
     </div>
     <div v-for="user in users">
-    
+        <p>{{ user.id }}</p>
+        <p>{{ user.username }}</p>
+        <p>{{ user.name }}</p>
     </div>
 </template>
 <script lang="ts" setup>
