@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { LoginRequest } from '~/clients';
+  import { LoginRequest } from '../../clients';
 
   const username = ref('admin')
   const password = ref('123mudar')

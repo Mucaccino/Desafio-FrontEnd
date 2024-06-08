@@ -1,4 +1,4 @@
-import { AuthClient, AuthenticateUserResult, LoginRequest } from '../clients';
+import { AuthClient, AuthenticateUserResult, LoginRequest } from '../../clients';
 
 export const useAuth = () => {
     const authClient = new AuthClient("http://localhost:5000");

@@ -10,7 +10,7 @@
     </div>
 </template>
 <script lang="ts" setup>
-import { UserClient, UserDto } from '~/clients';
+import { UserClient, UserDto } from '../../clients';
 
 definePageMeta({
     middleware: 'admin-only'
