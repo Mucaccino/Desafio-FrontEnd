@@ -6,6 +6,9 @@
           <NuxtLink to="/public" class="underline">Public</NuxtLink>
           <NuxtLink to="/private" v-if="authUser" class="underline">Private</NuxtLink>
           <NuxtLink to="/admin" v-if="userAdmin" class="underline">Admin</NuxtLink>
+          <div>
+            {{ $t("helloWorld") }}
+          </div>
           <NuxtLink
             class="ml-auto text-black py-1 px-2 rounded bg-light-100 hover bg-white"
             to="/login"
