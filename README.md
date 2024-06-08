@@ -33,7 +33,7 @@ Inicio o servidor de desenvolvimento em `http://localhost:3000`:
 
 ```bash
 # make
-make dev
+make run dev
 ```
 
 Ou direto do projeto:
